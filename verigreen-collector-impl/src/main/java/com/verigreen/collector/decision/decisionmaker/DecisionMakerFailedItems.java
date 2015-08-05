@@ -131,7 +131,8 @@ public class DecisionMakerFailedItems {
         CommitItemContainer commitItemContainer = CollectorApi.getCommitItemContainer();
         CommitItem commitItem;
         for (CommitItem currItem : items) {
-        	commitItem = commitItemContainer.get(currItem.getKey());
+
+        	commitItem = commitItemContainer.get(currItem.getKey()); //we need to get the refreshed commitItem so we will have the latest data of the item
         	if (commitItem.getStatus().isFailureState() && !commitItem.isDone()) {
         		ret.add(commitItem);
             }
