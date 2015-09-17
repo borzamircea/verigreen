@@ -29,6 +29,7 @@ public class DecisionMakerNotStartedItems {
         
         List<Decision> ret = new ArrayList<>();
         items = CommitItemUtils.refreshItems(items);
+        items = CommitItemUtils.filterNotDone(items);
         if (!isPending(items)) {
             Collection<CommitItem> notStartedItems =
                     CommitItemUtils.filterItems(items, VerificationStatus.NOT_STARTED);
