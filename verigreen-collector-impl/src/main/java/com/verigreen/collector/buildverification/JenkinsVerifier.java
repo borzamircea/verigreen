@@ -51,7 +51,7 @@ public class JenkinsVerifier implements BuildVerifier {
     private int INITIAL_SLEEP_MILLIS;
     private int MAX_SLEEP_TIME;
 
-    private static Job job2Verify = getJobToVerify();
+    public static Job job2Verify = getJobToVerify();
     
     
     static JenkinsUpdater jenkinsUpdater = JenkinsUpdater.getInstance();
@@ -86,7 +86,7 @@ public class JenkinsVerifier implements BuildVerifier {
 		return jobRetry;
 	}
 	
-	private static Job getJobToVerify()
+	public static Job getJobToVerify()
 	{
 		Job jobToVerify =  null;
 		int jobRetries = getJobRetryCounter();
@@ -138,10 +138,11 @@ public class JenkinsVerifier implements BuildVerifier {
                     RuntimeUtils.getCurrentMethodName(),
                     String.format(
                             "Failed get job for verification after [%s] retries", retries - 1));
-			CollectorApi.getVerigreenNeededLogic().sendEmailNotification("Failed get job for verification", "<span style='font-family:HP Simplified;'>Failed get job for verification: "+VerigreenNeededLogic.properties.getProperty("jenkins.jobName")+". Please contact your DevOps engineer, there might be a load on Jenkins that prevents creating new verification jobs.</span>", new String[] { VerigreenNeededLogic.properties.getProperty("email.address") }, VerigreenNeededLogic.getSignature());
+			CollectorApi.getVerigreenNeededLogic().sendEmailNotification("Failed get job for verification", "<span style='font-family:Metric;'>Failed get job for verification: "+VerigreenNeededLogic.properties.getProperty("jenkins.jobName")+". Please contact your DevOps engineer, there might be a load on Jenkins that prevents creating new verification jobs.</span>", new String[] { VerigreenNeededLogic.properties.getProperty("email.address") }, VerigreenNeededLogic.getSignature());
 		}
 		return jobToVerify;
 	}
+	
     private CommitItem getCurrentCommitItem(String branchName)
     {
     	List<CommitItem> all = CollectorApi.getCommitItemContainer().getAll();
