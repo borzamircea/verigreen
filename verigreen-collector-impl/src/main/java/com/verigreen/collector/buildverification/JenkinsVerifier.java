@@ -138,7 +138,7 @@ public class JenkinsVerifier implements BuildVerifier {
                     RuntimeUtils.getCurrentMethodName(),
                     String.format(
                             "Failed get job for verification after [%s] retries", retries - 1));
-			CollectorApi.getVerigreenNeededLogic().sendEmailNotification("Failed get job for verification", "<span style='font-family:Metric;'>Failed get job for verification: "+VerigreenNeededLogic.properties.getProperty("jenkins.jobName")+". Please contact your DevOps engineer, there might be a load on Jenkins that prevents creating new verification jobs.</span>", new String[] { VerigreenNeededLogic.properties.getProperty("email.address") }, VerigreenNeededLogic.getSignature());
+			CollectorApi.getVerigreenNeededLogic().sendEmailNotification("Failed get job for verification", "<span style='font-family:Metric;'>Failed get job for verification: "+CollectorApi.getVerificationJobName()+". Please contact your DevOps engineer, there might be a load on Jenkins that prevents creating new verification jobs.</span>", new String[] { VerigreenNeededLogic.properties.getProperty("email.address") }, VerigreenNeededLogic.getSignature());
 		}
 		return jobToVerify;
 	}
@@ -164,7 +164,7 @@ public class JenkinsVerifier implements BuildVerifier {
 		try {
 	         VerigreenLogger.get().log(JenkinsVerifier.class.getName(),
 	        		 RuntimeUtils.getCurrentMethodName(),
-	        		 String.format("Triggering job [%s] for branch [%s]", job2Verify.getName(), branchName));
+	        		 String.format("Triggering job [%s] for branch [%s]", CollectorApi.getVerificationJobName(), branchName));
 			 Map<String,String> commitParams = VerigreenNeededLogic.checkJenkinsMode(commitItem);
 			 commitItem.setTriggeredAttempt(true);
 			 jenkinsUpdater.register(commitItem);
