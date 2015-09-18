@@ -17,14 +17,13 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
 import com.google.common.collect.ImmutableMap;
-import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.Build;
-import com.offbytwo.jenkins.model.BuildResult;
 import com.offbytwo.jenkins.model.BuildWithDetails;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
@@ -52,7 +51,7 @@ public class JenkinsVerifier implements BuildVerifier {
     private int MAX_SLEEP_TIME;
 
     public static Job job2Verify = getJobToVerify();
-    
+    private static ReentrantLock lock = new ReentrantLock(); 
     
     static JenkinsUpdater jenkinsUpdater = JenkinsUpdater.getInstance();
     
@@ -138,7 +137,7 @@ public class JenkinsVerifier implements BuildVerifier {
                     RuntimeUtils.getCurrentMethodName(),
                     String.format(
                             "Failed get job for verification after [%s] retries", retries - 1));
-			CollectorApi.getVerigreenNeededLogic().sendEmailNotification("Failed get job for verification", "<span style='font-family:Metric;'>Failed get job for verification: "+CollectorApi.getVerificationJobName()+". Please contact your DevOps engineer, there might be a load on Jenkins that prevents creating new verification jobs.</span>", new String[] { VerigreenNeededLogic.properties.getProperty("email.address") }, VerigreenNeededLogic.getSignature());
+			CollectorApi.getVerigreenNeededLogic().sendEmailNotification("Failed get job for verification", "<span style='font-family:Metric;'>Failed get job for verification: "+VerigreenNeededLogic.properties.getProperty("jenkins.jobName")+". Please contact your DevOps engineer, there might be a load on Jenkins that prevents creating new verification jobs.</span>", new String[] { VerigreenNeededLogic.properties.getProperty("email.address") }, VerigreenNeededLogic.getSignature());
 		}
 		return jobToVerify;
 	}
@@ -164,7 +163,7 @@ public class JenkinsVerifier implements BuildVerifier {
 		try {
 	         VerigreenLogger.get().log(JenkinsVerifier.class.getName(),
 	        		 RuntimeUtils.getCurrentMethodName(),
-	        		 String.format("Triggering job [%s] for branch [%s]", CollectorApi.getVerificationJobName(), branchName));
+	        		 String.format("Triggering job [%s] for branch [%s]", job2Verify.getName(), branchName));
 			 Map<String,String> commitParams = VerigreenNeededLogic.checkJenkinsMode(commitItem);
 			 commitItem.setTriggeredAttempt(true);
 			 jenkinsUpdater.register(commitItem);
@@ -272,19 +271,20 @@ public class JenkinsVerifier implements BuildVerifier {
     
     @Override
     public boolean stop(String jobName, String buildIdToStop) {
-        
+        lock.lock();
         boolean ans = false;
-        JenkinsServer jenkinsServer = CollectorApi.getJenkinsServer();
         try {
             VerigreenLogger.get().log(
                     getClass().getName(),
                     RuntimeUtils.getCurrentMethodName(),
                     String.format("Stopping build (%s)", buildIdToStop));
-            JobWithDetails job = jenkinsServer.getJob(jobName);
-            Build buildToStop = job.getBuildByNumber(Integer.parseInt(buildIdToStop));
+            
+            Build buildToStop = new Build(Integer.parseInt(buildIdToStop), job2Verify.getUrl()+buildIdToStop+"/");
+            buildToStop.setClient(job2Verify.getClient());
+
             if (buildIdToStop != null) {
                 buildToStop.Stop();
-                ans = buildToStop.details().getResult().equals(BuildResult.ABORTED);
+                ans = true;
             } else {
                 VerigreenLogger.get().error(
                         getClass().getName(),
@@ -300,6 +300,8 @@ public class JenkinsVerifier implements BuildVerifier {
                     RuntimeUtils.getCurrentMethodName(),
                     String.format("Failed to stop build [%s] for job [%s]", buildIdToStop, jobName),
                     e);
+        }finally{
+        	lock.unlock();
         }
         
         return ans;

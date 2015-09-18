@@ -38,7 +38,7 @@ public class OnFailedByParentHandler extends DecisionHandler {
         ExecutorServiceFactory.fireAndForget(new Runnable() {
         
         @Override
-        public void run() 
+        public synchronized void run() 
         {
             CollectorApi.getJenkinsVerifier().stop(CollectorApi.getVerificationJobName(), String.valueOf(_commitItem.getBuildNumberToStop()));
         }
