@@ -53,7 +53,7 @@ public class DecisionMakerFailedItems {
     
     private boolean isPending(CommitItem item) {
         
-        if (item == null || item.isDone() ) {
+    	if (item == null || item.isDone()) {
             
             return false;
         }
@@ -70,7 +70,7 @@ public class DecisionMakerFailedItems {
         List<Decision> ret = new ArrayList<>();
         CommitItem parent = item.getParent();
         CommitItem houseOfCardsStart = item;
-        if (parent == null || parent.getStatus().equals(VerificationStatus.PASSED)) {
+        if (parent == null || parent.getStatus().equals(VerificationStatus.PASSED) || parent.getStatus().equals(VerificationStatus.PASSED_AND_PUSHED)) {
             item.setDone(true);
             ret.add(new Decision(item.getKey(), new OnFailureHandler(item)));
             houseOfCardsStart = item.getChild();
