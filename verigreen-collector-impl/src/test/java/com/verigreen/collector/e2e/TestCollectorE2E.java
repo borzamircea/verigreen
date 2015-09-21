@@ -78,7 +78,7 @@ public class TestCollectorE2E extends CollectorUnitTestCase {
     @Test
     public void testE2EWith2ItemsSeparately() throws Exception {
         
-        JenkinsVerifierMockFactory.setHangMock();
+        //JenkinsVerifierMockFactory.setHangMock();
         CommitItem item1 =
                 createItem(TestCollectorConstants.BRANCH_1, true, false, false, true, true);
         // consume

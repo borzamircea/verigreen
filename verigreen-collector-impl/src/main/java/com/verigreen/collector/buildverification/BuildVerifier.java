@@ -14,11 +14,5 @@ package com.verigreen.collector.buildverification;
 
 public interface BuildVerifier {
     
-    public BuildVerificationResult BuildAndVerify(
-            String jobName,
-            String parameterNameForJob,
-            String branchName,
-            BuildDataCallback buildDataCallback);
-    
     public boolean stop(String jobName, String buildIdToStop);
 }

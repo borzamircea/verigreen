@@ -20,7 +20,6 @@ import java.util.List;
 import org.json.JSONException;
 
 import com.verigreen.collector.api.VerificationStatus;
-import com.verigreen.collector.buildverification.JenkinsUpdater;
 import com.verigreen.collector.common.CommitItemUtils;
 import com.verigreen.collector.common.log4j.VerigreenLogger;
 import com.verigreen.collector.decision.Decision;

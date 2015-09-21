@@ -12,15 +12,8 @@
  *******************************************************************************/
 package com.verigreen.buildverification;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import org.easymock.EasyMock;
-import org.easymock.IAnswer;
 
-import com.verigreen.collector.api.VerificationStatus;
-import com.verigreen.collector.buildverification.BuildDataCallback;
-import com.verigreen.collector.buildverification.BuildVerificationResult;
 import com.verigreen.collector.buildverification.BuildVerifier;
 
 public class JenkinsVerifierMockFactory {
@@ -34,7 +27,7 @@ public class JenkinsVerifierMockFactory {
         return _buildVerifier;
     }
     
-    public static void setPassedMock() {
+/*    public static void setPassedMock() {
         
         setMock(VerificationStatus.PASSED);
     }
@@ -44,7 +37,7 @@ public class JenkinsVerifierMockFactory {
         setMock(VerificationStatus.FAILED);
     }
     
-    public static void setHangMock() {
+/*    public static void setHangMock() {
         
         reset();
         EasyMock.expect(
@@ -82,7 +75,7 @@ public class JenkinsVerifierMockFactory {
         }
         replay();
     }
-    
+    */
     public static void replay() {
         
         EasyMock.replay(_buildVerifier);

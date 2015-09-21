@@ -172,11 +172,6 @@ public class CallJenkinsJob implements Job {
 					 values.setJenkinsResult(childJsonObject.get("result").getAsString());
 				 }
 				 
-				 
-//				 String timestamp = childJsonObject.get("timestamp").getAsString();
-						 
-				 //buildsAndStatusesMap.put(buildNumber,jenkinsResult);
-				 
 				 JsonArray actionsJsonArray = childJsonObject.get("actions").getAsJsonArray();
 				 
 				 parameterJsonObjectArray = checkForParameters(actionsJsonArray);

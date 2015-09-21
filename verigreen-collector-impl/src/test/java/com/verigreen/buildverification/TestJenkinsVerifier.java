@@ -13,13 +13,6 @@
 package com.verigreen.buildverification;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import junit.framework.Assert;
 
@@ -31,8 +24,6 @@ import org.springframework.test.context.ContextConfiguration;
 import com.google.common.collect.ImmutableMap;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.JobWithDetails;
-import com.verigreen.collector.api.VerificationStatus;
-import com.verigreen.collector.buildverification.BuildVerificationResult;
 import com.verigreen.collector.buildverification.BuildVerifier;
 import com.verigreen.collector.buildverification.JenkinsVerifier;
 import com.verigreen.collector.spring.CollectorApi;
@@ -46,7 +37,7 @@ import com.verigreen.common.testcase.IntegrationTest;
 @Ignore
 public class TestJenkinsVerifier extends CollectorSpringTestCase {
     
-    @Test
+   /* @Test
     public void testBuildAndVerify() {
         
         final BuildVerifier jenkinsVerifier = CollectorApi.getJenkinsVerifier();
@@ -82,7 +73,7 @@ public class TestJenkinsVerifier extends CollectorSpringTestCase {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
     
     @Test
     public void testStopBuildById() throws IOException, InterruptedException {

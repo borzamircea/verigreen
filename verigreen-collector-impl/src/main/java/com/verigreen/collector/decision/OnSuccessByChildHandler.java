@@ -13,7 +13,6 @@
 package com.verigreen.collector.decision;
 
 import com.verigreen.collector.api.VerificationStatus;
-import com.verigreen.collector.buildverification.CommitItemVerifier;
 import com.verigreen.collector.common.EmailSender;
 import com.verigreen.collector.common.log4j.VerigreenLogger;
 import com.verigreen.collector.model.CommitItem;

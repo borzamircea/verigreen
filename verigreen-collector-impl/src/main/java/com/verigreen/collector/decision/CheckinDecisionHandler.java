@@ -45,7 +45,6 @@ public class CheckinDecisionHandler extends DecisionHandler {
 							"Update branch (%s) succeeded, going to verify...",
 							_commitItem));
 			updateCommitItemToRunning();
-			//CommitItemVerifier verifier = CollectorApi.getCommitItemVerifier();
 			CollectorApi.getCommitItemVerifierManager().add(_commitItem.getKey(), verifier);
 			verifier.verify(_commitItem);
 		}
