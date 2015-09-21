@@ -15,16 +15,10 @@ package com.verigreen.collector.buildverification;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.verigreen.collector.common.log4j.VerigreenLogger;
 import com.verigreen.collector.model.CommitItem;
-import com.verigreen.collector.spring.CollectorApi;
-import com.verigreen.common.concurrency.RuntimeUtils;
-import com.verigreen.common.utils.StringUtils;
 
 public class CommitItemVerifier {
-    
-    private boolean _canceled = false;
-    private String _commitItemKey = StringUtils.EMPTY_STRING;
+
     private List<CommitItem> createCommitItems = new ArrayList<>();
     private static volatile CommitItemVerifier instance = null;
     
@@ -49,8 +43,6 @@ public class CommitItemVerifier {
     
     public void verify(final CommitItem item) {
 
-       _commitItemKey = item.getKey();
-
         
         createCommitItems.add(item);
     }
@@ -58,26 +50,6 @@ public class CommitItemVerifier {
     public List<CommitItem> getCommitItems(){
 		return this.createCommitItems;
 	}
- 
-	public void cancel() {
-        
-        _canceled = true;
-        if (!StringUtils.isNullOrEmpty(_commitItemKey)) {
-            CommitItem commitItem = CollectorApi.getCommitItemContainer().get(_commitItemKey);
-            VerigreenLogger.get().log(
-                    getClass().getName(),
-                    RuntimeUtils.getCurrentMethodName(),
-                    String.format("Cancelling verification of %s...", commitItem));
-            CollectorApi.getJenkinsVerifier().stop(
-                    CollectorApi.getVerificationJobName(),
-                    String.valueOf(commitItem.getBuildNumber()));
-        }
-    }
-    
-    public boolean isCanceled() {
-        
-        return _canceled;
-    }
     
   
 }
