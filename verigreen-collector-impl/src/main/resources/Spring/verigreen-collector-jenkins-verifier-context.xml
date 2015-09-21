@@ -16,13 +16,12 @@ See the License for the specific language governing permissions and limitations 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
-	<bean id="jenkinsVerifier" class="com.verigreen.collector.buildverification.BuildVerifierFactory"
-		factory-method="createVerifier" scope="prototype">
+	<bean id="jenkinsVerifier" class="com.verigreen.collector.buildverification.JenkinsVerifier"
+	scope="prototype">
 	</bean>
 	
 	<bean id="commitItemVerifier" class="com.verigreen.collector.buildverification.CommitItemVerifier"
 		 scope="prototype">
-		<property name="timeoutInMillis" value="#{${jenkins.timeoutInSeconds} * 1000}" />
 	</bean>
 	
 	<bean id="commitItemVerifierManager" class="com.verigreen.collector.buildverification.CommitItemVerifierManager"
