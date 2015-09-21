@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
-import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.BuildResult;
 import com.offbytwo.jenkins.model.Job;
@@ -106,7 +105,7 @@ public class JenkinsVerifier implements BuildVerifier {
 		}
 		return jobToVerify;
 	}
-    
+
     public static void triggerJob(CommitItem commitItem) {
     	
     	String branchName = commitItem.getMergedBranchName();
@@ -150,18 +149,16 @@ public class JenkinsVerifier implements BuildVerifier {
     	return buildUrl;
     }
     
-    
     @Override
     public boolean stop(String jobName, String buildIdToStop) {
-        
+        //TO DO: Remove unnecessary calls to Jenkins for stopping a Build   
         boolean ans = false;
-        JenkinsServer jenkinsServer = CollectorApi.getJenkinsServer();
         try {
             VerigreenLogger.get().log(
                     getClass().getName(),
                     RuntimeUtils.getCurrentMethodName(),
                     String.format("Stopping build (%s)", buildIdToStop));
-            JobWithDetails job = jenkinsServer.getJob(jobName);
+            JobWithDetails job = CollectorApi.getJenkinsServer().getJob(jobName);
             Build buildToStop = job.getBuildByNumber(Integer.parseInt(buildIdToStop));
             if (buildIdToStop != null) {
                 buildToStop.Stop();
@@ -190,5 +187,5 @@ public class JenkinsVerifier implements BuildVerifier {
 	public void setJobName(String jobName) {
 		VerigreenNeededLogic.VerigreenMap.put("_jobName", jobName);
 	}  
-    
+
 }

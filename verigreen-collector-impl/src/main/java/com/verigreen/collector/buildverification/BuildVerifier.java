@@ -13,6 +13,6 @@
 package com.verigreen.collector.buildverification;
 
 public interface BuildVerifier {
-    
+
     public boolean stop(String jobName, String buildIdToStop);
 }

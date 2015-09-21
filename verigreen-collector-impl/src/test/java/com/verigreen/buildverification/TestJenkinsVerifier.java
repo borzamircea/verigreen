@@ -37,6 +37,7 @@ import com.verigreen.common.testcase.IntegrationTest;
 @Ignore
 public class TestJenkinsVerifier extends CollectorSpringTestCase {
     
+
    /* @Test
     public void testBuildAndVerify() {
         
@@ -74,6 +75,17 @@ public class TestJenkinsVerifier extends CollectorSpringTestCase {
             }
         }
     }*/
+	
+    @Test
+    public void testBuild() throws IOException {
+        
+    	String jobName = "testing-jenkins-api";
+        String parameterNameForJob = "ParamForTesting";
+        final ImmutableMap<String, String> params = ImmutableMap.of(parameterNameForJob, "master");
+        JenkinsServer jenkninsServer = CollectorApi.getJenkinsServer();
+        JobWithDetails job = jenkninsServer.getJob(jobName);
+        job.build(params);
+    }
     
     @Test
     public void testStopBuildById() throws IOException, InterruptedException {

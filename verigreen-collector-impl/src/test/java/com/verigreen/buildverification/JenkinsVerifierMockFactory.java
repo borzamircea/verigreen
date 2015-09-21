@@ -20,8 +20,6 @@ public class JenkinsVerifierMockFactory {
     
     private static BuildVerifier _buildVerifier = EasyMock.createNiceMock(BuildVerifier.class);
     
-    private static final String url = "https://helloworld.com";
-    
     public static BuildVerifier getMock() {
         
         return _buildVerifier;
@@ -76,6 +74,7 @@ public class JenkinsVerifierMockFactory {
         replay();
     }
     */
+
     public static void replay() {
         
         EasyMock.replay(_buildVerifier);

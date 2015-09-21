@@ -18,7 +18,7 @@ import java.util.List;
 import com.verigreen.collector.model.CommitItem;
 
 public class CommitItemVerifier {
-    
+
     private List<CommitItem> createCommitItems = new ArrayList<>();
     private static volatile CommitItemVerifier instance = null;
     
@@ -44,7 +44,6 @@ public class CommitItemVerifier {
     public void verify(final CommitItem item) {
         
         createCommitItems.add(item);
-        
     }
     
     public List<CommitItem> getCommitItems(){
