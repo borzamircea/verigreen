@@ -145,7 +145,7 @@ public class JenkinsVerifier implements BuildVerifier {
     
     @Override
     public boolean stop(String jobName, String buildIdToStop) {
-        //TO DO: Remove unnecessary calls to Jenkins for stopping a Build   
+        //TODO: Remove unnecessary calls to Jenkins for stopping a Build. Try to minimize the number of calls.   
         boolean ans = false;
         try {
             VerigreenLogger.get().log(
