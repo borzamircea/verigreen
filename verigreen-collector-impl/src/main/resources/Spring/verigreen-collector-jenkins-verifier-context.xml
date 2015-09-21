@@ -18,12 +18,6 @@ See the License for the specific language governing permissions and limitations 
 	
 	<bean id="jenkinsVerifier" class="com.verigreen.collector.buildverification.BuildVerifierFactory"
 		factory-method="createVerifier" scope="prototype">
-		<constructor-arg name="timeoutForBuildInSeconds" value="${jenkins.timeoutInSeconds}" />
-		<constructor-arg name="sleepTimeForNextBuildNumberInSeconds" value="1" />
-		<constructor-arg name="sleepTimeForBuildProcessInSeconds" value="10" />
-		<property name="DEFAULT_COUNT"  value="${default_count:5}"/>
-		<property name="INITIAL_SLEEP_MILLIS" value="${initial_sleep_millis:2000}"/>
-		<property name="MAX_SLEEP_TIME" value="${max_sleep_time:30000}"/>
 	</bean>
 	
 	<bean id="commitItemVerifier" class="com.verigreen.collector.buildverification.CommitItemVerifier"

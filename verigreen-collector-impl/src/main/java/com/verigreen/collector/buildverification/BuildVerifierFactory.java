@@ -14,15 +14,9 @@ package com.verigreen.collector.buildverification;
 
 public class BuildVerifierFactory {
     
-    public static BuildVerifier createVerifier(
-            int timeoutForBuildInSeconds,
-            int sleepTimeForNextBuildNumberInSeconds,
-            int sleepTimeForBuildProcessInSeconds) {
+    public static BuildVerifier createVerifier() {
         
         JenkinsVerifier verifier = new JenkinsVerifier();
-        verifier.setSleepTimeForBuildProcessInSeconds(sleepTimeForBuildProcessInSeconds);
-        verifier.setSleepTimeForNextBuildNumberInSeconds(sleepTimeForNextBuildNumberInSeconds);
-        verifier.setTimeoutForBuildInSeconds(timeoutForBuildInSeconds);
         
         return verifier;
     }
