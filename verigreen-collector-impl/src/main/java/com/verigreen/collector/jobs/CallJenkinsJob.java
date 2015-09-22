@@ -158,32 +158,35 @@ public class CallJenkinsJob implements Job {
 
 		JsonArray jsonBuildsArray = mainJson.getAsJsonArray("builds");
 		for (int i = 0; i < jsonBuildsArray.size(); i++) 
-		{  // **line 2**
-				 JsonObject childJsonObject = (JsonObject) jsonBuildsArray.get(i);
-				 String buildNumber = childJsonObject.get("number").getAsString();
-				 
-				 MinJenkinsJob values = new MinJenkinsJob();
-				 values.setBuildNumber(buildNumber);
-				 if (childJsonObject.get("result") instanceof JsonNull){
-					 values.setJenkinsResult("null");
-				 }
-				 else
-				 {
-					 values.setJenkinsResult(childJsonObject.get("result").getAsString());
-				 }
-				 
-				 JsonArray actionsJsonArray = childJsonObject.get("actions").getAsJsonArray();
-				 
-				 parameterJsonObjectArray = checkForParameters(actionsJsonArray);
-				
-				 JsonArray jsonParametersArray =  parameterJsonObjectArray.getAsJsonArray("parameters");
-				 
-				 JsonObject parameterJsonObject = (JsonObject) jsonParametersArray.get(0);
-				 
-				 values.setBranchName(parameterJsonObject.get("value").getAsString());
-				 
-				 buildsAndStatusesMap.put(values.getBranchName(), values);	
-				 
+		{
+			 JsonObject childJsonObject = (JsonObject) jsonBuildsArray.get(i);
+			 
+			 String buildNumber = childJsonObject.get("number").getAsString();
+			 
+			 MinJenkinsJob values = new MinJenkinsJob();
+			 
+			 values.setBuildNumber(buildNumber);
+			 
+			 if (childJsonObject.get("result") instanceof JsonNull)
+			 {
+				 values.setJenkinsResult("null");
+			 }
+			 else
+			 {
+				 values.setJenkinsResult(childJsonObject.get("result").getAsString());
+			 }
+			 
+			 JsonArray actionsJsonArray = childJsonObject.get("actions").getAsJsonArray();
+			 
+			 parameterJsonObjectArray = checkForParameters(actionsJsonArray);
+			
+			 JsonArray jsonParametersArray =  parameterJsonObjectArray.getAsJsonArray("parameters");
+			 
+			 JsonObject parameterJsonObject = (JsonObject) jsonParametersArray.get(0);
+			 
+			 values.setBranchName(parameterJsonObject.get("value").getAsString());
+			 
+			 buildsAndStatusesMap.put(values.getBranchName(), values);				 
 		}
 		return buildsAndStatusesMap;
 	}
@@ -209,19 +212,15 @@ public class CallJenkinsJob implements Job {
 		 * this method will do:
 		 * 1) if both counters reaches their limits if so = trigger failed
 		 * 	  if timeoutConter didn't reach the limit then:
-			 * 		++timeoutcounter
-			 * else
+		 *	 		++timeoutcounter
+	     * 		else
 		 * 			++triggercounter;
 		 * 			timeoutCounter = 0;
 		 * 			change the triggerAttempt to false
 		 * 			save the commit item
-		 * unregister the observer from subject (update)
-			 * 		adding it (commitItem) to the commitItemVerifier list.
+		 * 			unregister the observer from subject (update)
+		 * 			adding it (commitItem) to the commitItemVerifier list.
 		*/
-		/*if(!parsedResults.get(((CommitItem)observer).getMergedBranchName()).equals("null"))
-		{
-			relevantObservers.add(observer);
-		}*/
 		
 		CommitItem itemToBeChecked = com.verigreen.collector.spring.CollectorApi.getCommitItemContainer().get(((CommitItem)observer).getKey());
 		int retriableCounter = itemToBeChecked.getRetriableCounter();
@@ -246,7 +245,7 @@ public class CallJenkinsJob implements Job {
 			com.verigreen.collector.spring.CollectorApi.getCommitItemContainer().save(itemToBeChecked);
 		}
 		else{
-			//increase the retriable counter for the onserver, inregister it and retrigger the job
+			//increase the retriable counter for the observer, unregister it and retrigger the job
 			retriableCounter++;
 			timeoutCounter = 0;
 			itemToBeChecked.setTimeoutCounter(timeoutCounter);

@@ -27,21 +27,11 @@ import com.verigreen.collector.spring.CollectorApi;
 import com.verigreen.common.concurrency.RuntimeUtils;
 
 public class JenkinsVerifier implements BuildVerifier {
-    
-    private int DEFAULT_COUNT;
 
     public static Job job2Verify = getJobToVerify();
     
     
     static JenkinsUpdater jenkinsUpdater = JenkinsUpdater.getInstance();
-    
-    public int getDEFAULT_COUNT() {
-		return DEFAULT_COUNT;
-	}
-
-	public void setDEFAULT_COUNT(int dEFAULT_COUNT) {
-		DEFAULT_COUNT = dEFAULT_COUNT;
-	}
 	
 	private static int getJobRetryCounter()
 	{
@@ -54,7 +44,7 @@ public class JenkinsVerifier implements BuildVerifier {
 		Job jobToVerify =  null;
 		int jobRetries = getJobRetryCounter();
 		int retries = 1;
-		while(retries < jobRetries + 1)
+		while(retries <= jobRetries)
 		{
 		try {
 			VerigreenLogger.get().log(
@@ -63,6 +53,24 @@ public class JenkinsVerifier implements BuildVerifier {
 	                String.format(
 	                        "Attempting to retrieve job for verification...", retries));
 			jobToVerify = CollectorApi.getJenkinsServer().getJob((CollectorApi.getVerificationJobName().toLowerCase()));	
+			if(jobToVerify != null)
+			{
+				VerigreenLogger.get().log(
+						JenkinsVerifier.class.getName(),
+						RuntimeUtils.getCurrentMethodName(),
+						String.format(
+								"Job for verification was retrieved successfully after [%s] retries", retries));
+				break;
+			}
+			else
+			{
+				VerigreenLogger.get().log(
+						JenkinsVerifier.class.getName(),
+						RuntimeUtils.getCurrentMethodName(),
+						String.format(
+								"Failed to retrieve job for verification. Retrying..."));
+				retries++;
+			}
 		}
 		catch (IOException e) 
 		{		
@@ -71,27 +79,6 @@ public class JenkinsVerifier implements BuildVerifier {
                     RuntimeUtils.getCurrentMethodName(),
                     String.format(
                             "Failed get job for verification"),e);
-		}
-		finally
-		{
-			if(jobToVerify != null)
-			{
-				VerigreenLogger.get().log(
-	                    JenkinsVerifier.class.getName(),
-	                    RuntimeUtils.getCurrentMethodName(),
-	                    String.format(
-	                            "Job for verification was retrieved successfully after [%s] retries", retries));
-				break;
-			}
-			else
-			{
-				VerigreenLogger.get().log(
-	                    JenkinsVerifier.class.getName(),
-	                    RuntimeUtils.getCurrentMethodName(),
-	                    String.format(
-	                            "Failed to retrieve job for verification. Retrying..."));
-				retries++;
-			}
 		}
 		}
 		if(jobToVerify == null)
@@ -151,7 +138,7 @@ public class JenkinsVerifier implements BuildVerifier {
     
     @Override
     public boolean stop(String jobName, String buildIdToStop) {
-        //TO DO: Remove unnecessary calls to Jenkins for stopping a Build   
+        //TODO: Remove unnecessary calls to Jenkins for stopping a Build. Try to minimize the number of calls.   
         boolean ans = false;
         try {
             VerigreenLogger.get().log(

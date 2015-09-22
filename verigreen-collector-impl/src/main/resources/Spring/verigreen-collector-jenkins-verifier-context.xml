@@ -17,8 +17,11 @@ See the License for the specific language governing permissions and limitations 
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<bean id="jenkinsVerifier" class="com.verigreen.collector.buildverification.JenkinsVerifier"
-		factory-method="createVerifier" scope="prototype">
-		<property name="DEFAULT_COUNT"  value="${default_count:5}"/>
+		 scope="prototype">
+	</bean>
+	
+	<bean id="commitItemVerifier" class="com.verigreen.collector.buildverification.CommitItemVerifier" 
+		 scope="prototype">
 	</bean>
 	
 	<bean id="commitItemVerifierManager" class="com.verigreen.collector.buildverification.CommitItemVerifierManager"

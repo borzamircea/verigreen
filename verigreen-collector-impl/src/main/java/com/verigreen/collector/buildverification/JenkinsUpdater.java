@@ -52,8 +52,8 @@ public class JenkinsUpdater implements Subject {
 	}
 
 	@Override
-	public void register(Observer o) {
-
+	public void register(Observer o) 
+	{
 		observers.add((CommitItem) o);
 		VerigreenLogger.get().log(
              getClass().getName(),
@@ -64,8 +64,8 @@ public class JenkinsUpdater implements Subject {
 	}
 	
 	@Override
-	public void unregister(Observer o) {
-	
+	public void unregister(Observer o) 
+	{
 		observers.remove(o);
 		VerigreenLogger.get().log(
 	             getClass().getName(),
@@ -75,7 +75,8 @@ public class JenkinsUpdater implements Subject {
 	                     o.toString()));
 	}
 
-	public List<Observer> setObserversStatus(List<Observer> relevantObservers, Map <String, MinJenkinsJob> results){
+	public List<Observer> setObserversStatus(List<Observer> relevantObservers, Map <String, MinJenkinsJob> results)
+	{
 		//sets the observer status based on the result recieved from Jenkins
 		List<Observer> notifiedObservers = new ArrayList<Observer>();
 		MinJenkinsJob result;
@@ -89,7 +90,8 @@ public class JenkinsUpdater implements Subject {
 	}
 	
 	@Override
-	public void notifyObserver(List<Observer> relevantObservers) {
+	public void notifyObserver(List<Observer> relevantObservers) 
+	{
 	//the relevant observers are notified, unregistered and saved to the commit item container	
 		List<CommitItem> notifiedObservers = new ArrayList<CommitItem>();
 		for(Observer observer : relevantObservers){
@@ -103,11 +105,11 @@ public class JenkinsUpdater implements Subject {
 			                     "Successfully updated and saved observer: %s",
 			                     observer.toString()));
 			}
-			else {
+			else 
+			{
 				unregister(observer);
 			}
-		}
-		
+		}	
 		CollectorApi.getCommitItemContainer().save(notifiedObservers);
 	}
 	
