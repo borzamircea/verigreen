@@ -47,7 +47,7 @@ public class JenkinsVerifier implements BuildVerifier {
 		Job jobToVerify =  null;
 		int jobRetries = getJobRetryCounter();
 		int retries = 1;
-		while(retries < jobRetries + 1)
+		while(retries <= jobRetries)
 		{
 		try {
 			VerigreenLogger.get().log(
@@ -56,6 +56,24 @@ public class JenkinsVerifier implements BuildVerifier {
 	                String.format(
 	                        "Attempting to retrieve job for verification...", retries));
 			jobToVerify = CollectorApi.getJenkinsServer().getJob((CollectorApi.getVerificationJobName().toLowerCase()));	
+			if(jobToVerify != null)
+			{
+				VerigreenLogger.get().log(
+						JenkinsVerifier.class.getName(),
+						RuntimeUtils.getCurrentMethodName(),
+						String.format(
+								"Job for verification was retrieved successfully after [%s] retries", retries));
+				break;
+			}
+			else
+			{
+				VerigreenLogger.get().log(
+						JenkinsVerifier.class.getName(),
+						RuntimeUtils.getCurrentMethodName(),
+						String.format(
+								"Failed to retrieve job for verification. Retrying..."));
+				retries++;
+			}
 		}
 		catch (IOException e) 
 		{		
@@ -64,27 +82,6 @@ public class JenkinsVerifier implements BuildVerifier {
                     RuntimeUtils.getCurrentMethodName(),
                     String.format(
                             "Failed get job for verification"),e);
-		}
-		finally
-		{
-			if(jobToVerify != null)
-			{
-				VerigreenLogger.get().log(
-	                    JenkinsVerifier.class.getName(),
-	                    RuntimeUtils.getCurrentMethodName(),
-	                    String.format(
-	                            "Job for verification was retrieved successfully after [%s] retries", retries));
-				break;
-			}
-			else
-			{
-				VerigreenLogger.get().log(
-	                    JenkinsVerifier.class.getName(),
-	                    RuntimeUtils.getCurrentMethodName(),
-	                    String.format(
-	                            "Failed to retrieve job for verification. Retrying..."));
-				retries++;
-			}
 		}
 		}
 		if(jobToVerify == null)
