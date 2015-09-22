@@ -86,7 +86,8 @@ public class DecisionMakerFailedItems {
      */
     private void houseOfCards(CommitItem item, List<Decision> decisions) {
         
-        if (item == null || item.isDone()) {
+        
+    	if (item == null || item.isDone()) {
             
             return;
         }
@@ -94,9 +95,9 @@ public class DecisionMakerFailedItems {
             
             return;
         }
+        item.setBuildNumberToStop(item.getBuildNumber());
         if (item.getStatus().equals(VerificationStatus.RUNNING)) {
         	JenkinsUpdater.getInstance().unregister(item);
-        	item.setBuildNumberToStop(item.getBuildNumber());
             decisions.add(new Decision(item.getKey(), CollectorApi.getOnFailedByParentHandler(item)));
         }
         VerigreenLogger.get().log(
@@ -119,7 +120,6 @@ public class DecisionMakerFailedItems {
                     String.format("Failed creating json file: " + System.getenv("VG_HOME") + "\\history.json",
                     e));
 		}
-        item.setBuildNumberToStop(item.getBuildNumber());
         item.setBuildNumber(0);
         item.setStatus(VerificationStatus.NOT_STARTED);
         CollectorApi.getCommitItemContainer().save(item);
