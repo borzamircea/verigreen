@@ -31,10 +31,7 @@ public class JenkinsVerifier implements BuildVerifier {
 
     public static Job job2Verify = getJobToVerify();
     
-    
-    static JenkinsUpdater jenkinsUpdater = JenkinsUpdater.getInstance();
-    
-   
+    static JenkinsUpdater jenkinsUpdater = JenkinsUpdater.getInstance(); 
 	
 	private static int getJobRetryCounter()
 	{
