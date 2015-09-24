@@ -23,6 +23,5 @@ public class CollectorUnitTestCase extends CollectorSpringTestCase {
     public void setUp() {
         
         super.setUp();
-       // JenkinsVerifierMockFactory.setPassedMock();
     }
 }

@@ -24,6 +24,7 @@ public class JenkinsVerifierMockFactory {
         
         return _buildVerifier;
     }
+<<<<<<< HEAD
     
 /*    public static void setPassedMock() {
         
@@ -74,6 +75,8 @@ public class JenkinsVerifierMockFactory {
         replay();
     }
     */
+=======
+>>>>>>> 03e4f4d046ae521bd65d1ea10e9032cea2563215
 
     public static void replay() {
         
